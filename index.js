@@ -21,3 +21,26 @@ const client = new MongoClient(uri, {
   serverApi: ServerApiVersion.v1,
 });
 
+function run() {
+  try {
+    const serviceCollection = client
+      .db("the_cooker_life-client")
+      .collection("foodservice");
+    const reviewCollection = client
+      .db("the_cooker_life-client")
+      .collection("reviews");
+
+    app.get("/services", async (req, res) => {
+      const query = {};
+      const cursor = serviceCollection.find(query);
+      const service = await cursor.limit(3).toArray();
+      res.send(service);
+    });
+    app.get("/allService", async (req, res) => {
+      const query = {};
+      const cursor = serviceCollection.find(query);
+      const service = await cursor.toArray();
+      res.send(service);
+    });
+
+   
